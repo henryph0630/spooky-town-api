@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 
 app.use(cors());
 app.use("/", express.static("public"));
+app.use("/Images", express.static(path.join(__dirname, "public", "Images")));
 
 // Load costumes data from JSON
 const costumes = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "costumes.json")));

@@ -6,7 +6,7 @@
         "category": "Men's Costumes",
         "description": "A spooky skeleton costume for all ages.",
         "Size": "Large",
-        "img_name": "Images/skeleton-costume2 200x.jpg"
+        "img_name": "/Images/skeleton-costume2 200x.jpg"
     },
     {
         "id": 2,
@@ -15,7 +15,7 @@
         "category": "Men's Costumes",
         "description": "A dark and ominous Grim Reaper costume.",
         "Size": "Medium",
-        "img_name": "Images/grim repaer.jpg"
+        "img_name": "/Images/grim repaer.jpg"
     },
     {
         "id": 3,
@@ -24,7 +24,7 @@
         "category": "Men's Costumes",
         "description": "A grotesque and grisly Zombie costume.",
         "Size": "Large",
-        "img_name": "Images/zombie costume.jpg"
+        "img_name": "/Images/zombie costume.jpg"
     },
     {
         "id": 4,
@@ -33,7 +33,7 @@
         "category": "Men's Costumes",
         "description": "An aristocratic Vampire costume",
         "Size": "Small",
-        "img_name": "Images/vampire costume.jpg"
+        "img_name": "/Images/vampire costume.jpg"
     },
     {
         "id": 5,
@@ -42,7 +42,7 @@
         "category": "Children's Costumes",
         "description": "A spunky baseball costume",
         "Size": "Small",
-        "img_name": "Images/baseball costume.jpg"
+        "img_name": "/Images/baseball costume.jpg"
     },
     {
         "id": 6,
@@ -51,7 +51,7 @@
         "category": "Children's Costumes",
         "description": "An adorable witch costume",
         "Size": "Medium",
-        "img_name": "Images/witchCostume.jpg"
+        "img_name": "/Images/witchCostume.jpg"
     },
     {
         "id": 7,
@@ -60,7 +60,7 @@
         "category": "Women's Costumes",
         "description": "A rebellious pirate costume",
         "Size": "Medium",
-        "img_name": "Images/pirate costume.jpg"
+        "img_name": "/Images/pirate costume.jpg"
     },
     {
         "id": 8,
@@ -69,6 +69,6 @@
         "category": "Women's Costumes",
         "description": "A twisted clown costume",
         "Size": "Small",
-        "img_name": "Images/twistedClown.jpg"
+        "img_name": "/Images/twistedClown.jpg"
     }
 ]
