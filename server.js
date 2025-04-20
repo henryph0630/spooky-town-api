@@ -42,3 +42,22 @@ app.post("/api/costumes", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+app.put("/api/costumes/:id", (req, res) => {
+  const { error, value } = costumeSchema.validate(req.body);
+  if (error) return res.status(400).json({ success: false, error: error.details[0].message });
+
+  const index = costumes.findIndex(c => c.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ success: false, error: "Costume not found" });
+
+  costumes[index] = value;
+  res.json({ success: true, updatedCostume: value });
+});
+
+app.delete("/api/costumes/:id", (req, res) => {
+  const index = costumes.findIndex(c => c.id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).json({ success: false, error: "Costume not found" });
+
+  const deleted = costumes.splice(index, 1);
+  res.json({ success: true, deletedCostume: deleted[0] });
+});
