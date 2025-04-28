@@ -1,63 +1,75 @@
+require('dotenv').config();
 const express = require("express");
 const cors = require("cors");
-const fs = require("fs");
 const path = require("path");
+const mongoose = require("mongoose");
 const Joi = require("joi");
+const Costume = require("./models/Costume");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// MongoDB Connection
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('MongoDB Connected Successfully'))
+.catch((err) => console.error('MongoDB Connection Error:', err));
+
+// Middleware
 app.use(cors());
 app.use("/", express.static("public"));
 app.use("/Images", express.static(path.join(__dirname, "public", "Images")));
 app.use(express.json());
 
-const costumes = JSON.parse(fs.readFileSync(path.join(__dirname, "data", "costumes.json")));
-
-app.get("/api/costumes", (req, res) => {
-  res.json(costumes);
-});
-
+// Joi Validation Schema
 const costumeSchema = Joi.object({
-  id: Joi.number().required(),
   name: Joi.string().required(),
-  price: Joi.string().required(),
-  category: Joi.string().required(),
-  description: Joi.string().required(),
+  price: Joi.number().required(),
   Size: Joi.string().required(),
+  description: Joi.string().required(),
   img_name: Joi.string().required()
 });
 
-app.post("/api/costumes", (req, res) => {
-  const { error, value } = costumeSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({ success: false, error: error.details[0].message });
-  }
+// Routes
 
-  costumes.push(value);
-
-  res.json({ success: true, newCostume: value });
+// GET costumes
+app.get("/api/costumes", async (req, res) => {
+  const costumes = await Costume.find();
+  res.json(costumes);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-app.put("/api/costumes/:id", (req, res) => {
+// POST costume
+app.post("/api/costumes", async (req, res) => {
   const { error, value } = costumeSchema.validate(req.body);
   if (error) return res.status(400).json({ success: false, error: error.details[0].message });
 
-  const index = costumes.findIndex(c => c.id === parseInt(req.params.id));
-  if (index === -1) return res.status(404).json({ success: false, error: "Costume not found" });
-
-  costumes[index] = value;
-  res.json({ success: true, updatedCostume: value });
+  const newCostume = new Costume(value);
+  await newCostume.save();
+  res.json({ success: true, newCostume });
 });
 
-app.delete("/api/costumes/:id", (req, res) => {
-  const index = costumes.findIndex(c => c.id === parseInt(req.params.id));
-  if (index === -1) return res.status(404).json({ success: false, error: "Costume not found" });
+// PUT costume
+app.put("/api/costumes/:id", async (req, res) => {
+  const { error, value } = costumeSchema.validate(req.body);
+  if (error) return res.status(400).json({ success: false, error: error.details[0].message });
 
-  const deleted = costumes.splice(index, 1);
-  res.json({ success: true, deletedCostume: deleted[0] });
+  const updatedCostume = await Costume.findByIdAndUpdate(req.params.id, value, { new: true });
+  if (!updatedCostume) return res.status(404).json({ success: false, error: "Costume not found" });
+
+  res.json({ success: true, updatedCostume });
+});
+
+// DELETE costume
+app.delete("/api/costumes/:id", async (req, res) => {
+  const deletedCostume = await Costume.findByIdAndDelete(req.params.id);
+  if (!deletedCostume) return res.status(404).json({ success: false, error: "Costume not found" });
+
+  res.json({ success: true, deletedCostume });
+});
+
+// Start Server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
